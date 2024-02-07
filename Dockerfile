@@ -17,7 +17,7 @@ FROM alpine:$ALPINE_VERSION as release
 ARG AZCOPY_VERSION
 LABEL name="docker-azcopy"
 LABEL version="$AZCOPY_VERSION"
-LABEL maintainer="Peter Dave Hello <hsu@peterdavehello.org>"
+LABEL maintainer="Meysam <meysam@licenseware.io>"
 COPY --from=build /azcopy/azcopy /usr/local/bin
 WORKDIR /WORKDIR
 CMD [ "azcopy" ]
