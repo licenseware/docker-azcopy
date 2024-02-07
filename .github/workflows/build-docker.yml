@@ -77,8 +77,6 @@ jobs:
       metadata: ${{ steps.build-push.outputs.metadata }}
     runs-on: ${{ inputs.runner }}
     steps:
-      - name: Github Security Monitor
-        uses: GitHubSecurityLab/actions-permissions/monitor@v1
       - name: Checkout
         uses: actions/checkout@v4
         with:
