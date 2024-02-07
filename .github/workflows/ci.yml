@@ -48,6 +48,8 @@ jobs:
     with:
       context: .
       image-name: ghcr.io/${{ github.repository }}
+      image-extra-tags: |
+        ghcr.io/${{ github.repository }}:${{ github.run_id }}
       platforms: linux/amd64,linux/arm64
       push: true
       scout-cves: true
