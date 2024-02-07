@@ -26,7 +26,7 @@ jobs:
     permissions:
       contents: read
       packages: write
-    uses: licenseware/infrastructure/.github/workflows/build-docker.yml@v2
+    uses: ./.github/workflows/build-docker.yml
     with:
       context: .
       image-name: ghcr.io/${{ github.repository }}
@@ -44,7 +44,7 @@ jobs:
     permissions:
       contents: read
       packages: write
-    uses: licenseware/infrastructure/.github/workflows/build-docker.yml@v2
+    uses: ./.github/workflows/build-docker.yml
     with:
       context: .
       image-name: ghcr.io/${{ github.repository }}
