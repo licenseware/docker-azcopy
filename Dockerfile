@@ -31,5 +31,8 @@ LABEL maintainer="Meysam <meysam@licenseware.io>"
 COPY --from=entrypoint /usr/local/bin/dumb-init /usr/local/bin/dumb-init
 COPY --from=build /azcopy/azcopy /usr/local/bin/
 
-ENTRYPOINT [ "dumb-init", "--", "azcopy" ]
-CMD [ "--help" ]
+RUN apk add --update coreutils && \
+  rm -rf /var/cache/apk/*
+
+ENTRYPOINT [ "dumb-init", "--" ]
+CMD [ "azcopy", "--help" ]
