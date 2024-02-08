@@ -8,7 +8,7 @@ ENV GOARCH=$TARGETARCH GOOS=linux CGO_ENABLED=0
 WORKDIR /azcopy
 ARG AZCOPY_VERSION
 RUN apk add --no-cache build-base
-RUN wget "https://github.com/Azure/azure-storage-azcopy/archive/v$AZCOPY_VERSION.tar.gz" -O src.tgz || wget "https://github.com/Azure/azure-storage-azcopy/archive/$AZCOPY_VERSION.tar.gz" -O src.tgz
+RUN wget "https://github.com/Azure/azure-storage-azcopy/archive/$AZCOPY_VERSION.tar.gz" -O src.tgz
 RUN tar xf src.tgz --strip 1 \
   && go build -o azcopy \
   && ./azcopy --version
