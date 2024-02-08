@@ -13,10 +13,23 @@ RUN tar xf src.tgz --strip 1 \
   && go build -o azcopy \
   && ./azcopy --version
 
+FROM curlimages/curl AS entrypoint
+
+ARG DUMB_INIT="https://github.com/Yelp/dumb-init/releases/download/v1.2.5/dumb-init_1.2.5_x86_64"
+
+USER root
+RUN curl -L -o /usr/local/bin/dumb-init $DUMB_INIT && \
+  chmod +x /usr/local/bin/dumb-init
+
 FROM alpine:$ALPINE_VERSION as release
+
 ARG AZCOPY_VERSION
 LABEL name="docker-azcopy"
 LABEL version="$AZCOPY_VERSION"
 LABEL maintainer="Meysam <meysam@licenseware.io>"
+
+COPY --from=entrypoint /usr/local/bin/dumb-init /usr/local/bin/dumb-init
 COPY --from=build /azcopy/azcopy /usr/local/bin/
-CMD [ "azcopy" ]
+
+ENTRYPOINT [ "dumb-init", "--", "azcopy" ]
+CMD [ "--help" ]
