@@ -1,5 +1,8 @@
 # Docker-AzCopy
 
+[![ghcr-size](https://ghcr-badge.egpl.dev/licenseware/docker-azcopy/size)](https://github.com/orgs/licenseware/packages/container/package/docker-azcopy)
+[![ghcr-tags](https://ghcr-badge.egpl.dev/licenseware/docker-azcopy/latest_tag?label=latest-tag)](https://github.com/orgs/licenseware/packages/container/package/docker-azcopy)
+
 ## Usage
 
 ```bash
