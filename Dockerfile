@@ -18,18 +18,6 @@ RUN apk add --no-cache build-base && \
     go build -o azcopy && \
     ./azcopy --version
 
-FROM busybox AS entrypoint-amd64
-
-ADD https://github.com/Yelp/dumb-init/releases/download/v1.2.5/dumb-init_1.2.5_x86_64 /usr/local/bin/dumb-init
-
-RUN chmod +x /usr/local/bin/dumb-init
-
-FROM busybox AS entrypoint-arm64
-
-ADD https://github.com/Yelp/dumb-init/releases/download/v1.2.5/dumb-init_1.2.5_aarch64 /usr/local/bin/dumb-init
-
-RUN chmod +x /usr/local/bin/dumb-init
-
 FROM alpine:${ALPINE_VERSION} as release
 
 ARG TARGETARCH
@@ -44,13 +32,7 @@ COPY --from=entrypoint-arm64 /usr/local/bin/dumb-init /usr/local/bin/dumb-init-a
 
 COPY --from=build /azcopy/azcopy /usr/local/bin/
 
-RUN if [ "$TARGETARCH" = "amd64" ]; then \
-        mv /usr/local/bin/dumb-init-amd64 /usr/local/bin/dumb-init; \
-    else \
-        mv /usr/local/bin/dumb-init-arm64 /usr/local/bin/dumb-init; \
-    fi && \
-    apk add --update coreutils && \
+RUN apk add --update coreutils && \
     rm -rf /var/cache/apk/*
 
-ENTRYPOINT [ "dumb-init", "--" ]
 CMD [ "azcopy", "--help" ]
