@@ -32,4 +32,5 @@ COPY --from=build /azcopy/azcopy /usr/local/bin/
 RUN apk add --update coreutils && \
     rm -rf /var/cache/apk/*
 
-CMD [ "azcopy", "--help" ]
+ENTRYPOINT [ "sh", "-c" ]
+CMD [ "azcopy --help" ]
