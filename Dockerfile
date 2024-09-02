@@ -27,9 +27,6 @@ LABEL name="docker-azcopy"
 LABEL version="$AZCOPY_VERSION"
 LABEL maintainer="Meysam <meysam@licenseware.io>"
 
-COPY --from=entrypoint-amd64 /usr/local/bin/dumb-init /usr/local/bin/dumb-init-amd64
-COPY --from=entrypoint-arm64 /usr/local/bin/dumb-init /usr/local/bin/dumb-init-arm64
-
 COPY --from=build /azcopy/azcopy /usr/local/bin/
 
 RUN apk add --update coreutils && \
