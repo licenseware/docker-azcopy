@@ -38,7 +38,7 @@ RUN if [ "${TARGETARCH}" = "amd64" ]; then \
         exit 1; \
     fi
 
-FROM alpine:${ALPINE_VERSION} as release
+FROM busybox:1 as release
 
 ARG TARGETARCH
 ARG AZCOPY_VERSION
