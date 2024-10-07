@@ -3,7 +3,7 @@ ARG GO_VERSION=1.23
 ARG ALPINE_VERSION=3.20
 ARG TARGETARCH
 
-FROM golang:${GO_VERSION}-alpine${ALPINE_VERSION} as build
+FROM golang:${GO_VERSION}-alpine${ALPINE_VERSION} AS build
 
 ARG TARGETARCH
 ARG AZCOPY_VERSION
@@ -34,11 +34,11 @@ RUN if [ "${TARGETARCH}" = "amd64" ]; then \
         curl -sSLo /usr/local/bin/dumb-init ${DUMB_INIT_ARM} && \
         chmod +x /usr/local/bin/dumb-init; \
     else \
-        echo "Unsupported architecture"; \
+        echo "Unsupported architecture: ${TARGETARCH}"; \
         exit 1; \
     fi
 
-FROM busybox:1 as release
+FROM busybox:1 AS release
 
 ARG TARGETARCH
 ARG AZCOPY_VERSION
