@@ -18,6 +18,26 @@ RUN apk add --no-cache build-base && \
     go build -o azcopy && \
     ./azcopy --version
 
+FROM curlimages/curl AS entrypoint
+
+ARG DUMB_INIT_AMD='https://github.com/Yelp/dumb-init/releases/download/v1.2.5/dumb-init_1.2.5_x86_64'
+ARG DUMB_INIT_ARM='https://github.com/Yelp/dumb-init/releases/download/v1.2.5/dumb-init_1.2.5_aarch64'
+
+ARG TARGETARCH
+
+USER root
+
+RUN if [ "${TARGETARCH}" = "amd64" ]; then \
+        curl -sSLo /usr/local/bin/dumb-init ${DUMB_INIT_AMD} && \
+        chmod +x /usr/local/bin/dumb-init; \
+    elif [ "${TARGETARCH}" = "arm64" ]; then \
+        curl -sSLo /usr/local/bin/dumb-init ${DUMB_INIT_ARM} && \
+        chmod +x /usr/local/bin/dumb-init; \
+    else \
+        echo "Unsupported architecture"; \
+        exit 1; \
+    fi
+
 FROM alpine:${ALPINE_VERSION} as release
 
 ARG TARGETARCH
@@ -27,10 +47,11 @@ LABEL name="docker-azcopy"
 LABEL version="$AZCOPY_VERSION"
 LABEL maintainer="Meysam <meysam@licenseware.io>"
 
+COPY --from=entrypoint /usr/local/bin/dumb-init /usr/local/bin/dumb-init
 COPY --from=build /azcopy/azcopy /usr/local/bin/
 
 RUN apk add --update coreutils && \
     rm -rf /var/cache/apk/*
 
-ENTRYPOINT [ "sh", "-c" ]
+ENTRYPOINT [ "dumb-init", "--" ]
 CMD [ "azcopy --help" ]
