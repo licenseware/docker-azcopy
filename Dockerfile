@@ -38,7 +38,7 @@ RUN apk add --no-cache build-base && \
     ./azcopy --version
 
 
-FROM busybox:1 AS release
+FROM alpine:3 AS release
 
 LABEL maintainer="Meysam <meysam@licenseware.io>"
 
